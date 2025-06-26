@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mateen Rashid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Consolas, Monaco, 'Lucida Console', monospace;
+            background-color: #3a3516;
+            color: #f5f5f5;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(58, 53, 22, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 16px;
+            font-weight: normal;
+            color: #f5f5f5;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #f5f5f5;
+            font-size: 14px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            opacity: 1;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #f5f5f5;
+        }
+
+        /* Page Sections */
+        .page {
+            min-height: 100vh;
+            padding: 120px 0 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page:not(.active) {
+            display: none;
+        }
+
+        /* About Page */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .intro {
+            text-align: left;
+        }
+
+        .intro h1 {
+            font-size: 48px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            color: #f5f5f5;
+        }
+
+        .intro .subtitle {
+            font-size: 18px;
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        .intro p {
+            font-size: 16px;
+            opacity: 0.8;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .contact-info {
+            margin-top: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .contact-list a {
+            color: #f5f5f5;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-list a:hover {
+            opacity: 1;
+        }
+
+        /* Experience Page */
+        .experience-content {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .experience-item {
+            border-left: 1px solid rgba(245, 245, 245, 0.2);
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 7px;
+            height: 7px;
+            background: #f5f5f5;
+            border-radius: 50%;
+        }
+
+        .experience-header {
+            margin-bottom: 15px;
+        }
+
+        .experience-title {
+            font-size: 18px;
+            font-weight: normal;
+            color: #f5f5f5;
+            margin-bottom: 5px;
+        }
+
+        .experience-company {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .experience-date {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .experience-description {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .experience-description ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .experience-description li {
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+
+        /* Skills Section */
+        .skills {
+            margin-top: 60px;
+        }
+
+        .skills h3 {
+            font-size: 16px;
+            font-weight: normal;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-category {
+            opacity: 0.8;
+        }
+
+        .skill-category h4 {
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .skill-list {
+            font-size: 12px;
+            opacity: 0.6;
+            line-height: 1.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            nav ul {
+                gap: 25px;
+            }
+
+            .intro h1 {
+                font-size: 36px;
+            }
+
+            .intro .subtitle {
+                font-size: 16px;
+            }
+
+            .page {
+                padding: 100px 0 40px;
+            }
+
+            .experience-item {
+                padding-left: 20px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Smooth transitions */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">portfolio</div>
+            <ul>
+                <li><a href="#about" class="nav-link active">about</a></li>
+                <li><a href="#experience" class="nav-link">experience</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Page -->
+    <section id="about" class="page active">
+        <div class="container">
+            <div class="about-content">
+                <div class="intro">
+                    <h1>mateen rashid</h1>
+                    <p class="subtitle">computer science student & private equity intern</p>
+                    <p>
+                        i'm a computer science student at tcnj with a passion for technology and finance. 
+                        currently interning in private equity at teakwood business partners, where i'm 
+                        exploring the intersection of technology and investment strategies.
+                    </p>
+                    <p>
+                        my interests span across building computers, cybersecurity, and economics/finance. 
+                        i enjoy understanding complex systems and finding innovative solutions to challenging 
+                        problems in both technical and financial domains.
+                    </p>
+                    <p>
+                        when i'm not studying or working, you'll find me researching the latest in 
+                        cybersecurity trends, building custom pcs, or analyzing market movements in 
+                        traditional and digital assets.
+                    </p>
+                </div>
+
+                <div class="contact-info">
+                    <h3>get in touch</h3>
+                    <ul class="contact-list">
+                        <li><a href="mailto:mateen.d.rashid@gmail.com">mateen.d.rashid@gmail.com</a></li>
+                        <li><a href="https://linkedin.com/in/mateen-rashid" target="_blank">linkedin.com/in/mateen-rashid</a></li>
+                        <li>(469) 469-7144</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Page -->
+    <section id="experience" class="page">
+        <div class="container">
+            <div class="experience-content">
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">private equity intern</div>
+                        <div class="experience-company">teakwood business partners</div>
+                        <div class="experience-date">2024 - present</div>
+                    </div>
+                    <div class="experience-description">
+                        <p></p>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">digital asset exchanger</div>
+                        <div class="experience-company">ogusers.com & discord</div>
+                        <div class="experience-date">2022 - 2024</div>
+                    </div>
+                    <div class="experience-description">
+                        <p>facilitated cryptocurrency exchanges and built a reputation in the digital asset trading community.</p>
+                        <ul>
+                            <li>facilitated cryptocurrency exchanges with over 120 customers, profiting $27,000+ in transactions</li>
+                            <li>built a trustworthy reputation within the crypto trading community</li>
+                            <li>gained expertise in market trends, risk assessment, and digital asset management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">google cybersecurity certification</div>
+                        <div class="experience-company">google career certificates</div>
+                        <div class="experience-date">march 2025 - present</div>
+                    </div>
+                    <div class="experience-description">
+                        <p>comprehensive cybersecurity program covering essential security practices and tools.</p>
+                        <ul>
+                            <li>learning network security fundamentals and threat detection methodologies</li>
+                            <li>studying incident response procedures and security framework implementation</li>
+                            <li>developing skills in python scripting for security automation and analysis</li>
+                            <li>exploring linux command line operations for cybersecurity professionals</li>
+                            <li>understanding risk assessment techniques and vulnerability management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">generative ai certification</div>
+                        <div class="experience-company">google cloud</div>
+                        <div class="experience-date">2024</div>
+                    </div>
+                    <div class="experience-description">
+                        <p>completed certification in generative artificial intelligence technologies through google cloud platform.</p>
+                        <ul>
+                            <li>learned fundamentals of large language models and generative ai architectures</li>
+                            <li>explored prompt engineering techniques for optimizing ai model responses</li>
+                            <li>studied responsible ai principles and ethical considerations in ai development</li>
+                            <li>gained hands-on experience with google cloud ai tools and apis</li>
+                            <li>understood practical applications of generative ai in business and technology</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="skills">
+                    <h3>core competencies</h3>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>computer science</h4>
+                            <div class="skill-list">
+                                java<br>
+                                python<br>
+                                data structures<br>
+                                algorithms<br>
+                                software engineering
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>cybersecurity</h4>
+                            <div class="skill-list">
+                                network security<br>
+                                risk assessment<br>
+                                security protocols<br>
+                                vulnerability analysis<br>
+                                digital forensics
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>finance & crypto</h4>
+                            <div class="skill-list">
+                                market analysis<br>
+                                cryptocurrency<br>
+                                digital assets<br>
+                                risk management<br>
+                                trading strategies
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>hardware</h4>
+                            <div class="skill-list">
+                                pc building<br>
+                                component selection<br>
+                                system optimization<br>
+                                troubleshooting<br>
+                                hardware analysis
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simple page navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const targetId = link.getAttribute('href').substring(1);
+                
+                // Update active nav link
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Show target page
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === targetId) {
+                        page.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Add fade-in animation to sections when they become active
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.experience-item').forEach(item => {
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
